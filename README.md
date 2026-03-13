@@ -22,6 +22,7 @@
 
 **Frontend:**
 - NextJS
+- Tailwind CSS
 
 **Backend:**
 - Laravel
