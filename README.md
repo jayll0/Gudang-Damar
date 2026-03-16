@@ -21,12 +21,12 @@
 ## 🛠 Tech Stack
 
 **Frontend:**
-- NextJS
+- VueJS
 - Tailwind CSS
 
 **Backend:**
 - Laravel
-- Python
+- InertiaJS
 - Supabase
 
 ## 🚀 How to Run the Project
