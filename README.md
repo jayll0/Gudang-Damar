@@ -53,11 +53,20 @@ https://github.com/NeoRyumasil/Gudang-Damar.git
 cd app
 ```
 
-### Step 3. Set the .env File, Copy .env.example
+### Step 3. Set the .env
+```
+copy the .env .example
+rename it to .env
+set the value in .env 
+```
 
-### Step 4. For First Setup Run the Setup
+### Step 4. Uncomment this in php.ini
 ```bash
-composer run setup
+extension_dir = "ext"
+extension=mbstring
+extension=openssl
+extension=pdo_pgsql
+extension=pgsql
 ```
 
 ### Step 5. Run the Project
@@ -66,6 +75,11 @@ composer run dev
 ```
 
 ### Step 6. Go to Localhost Links to See the Project
+```
+Vite = http://localhost:5173/
+
+Laravel = http://localhost:8000
+```
 
 ## 📋 Requirements
 - Supabase
