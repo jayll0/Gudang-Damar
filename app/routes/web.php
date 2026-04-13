@@ -30,6 +30,8 @@ Route::get('/test', function () {
 
 Route::resource('barang', BarangController::class);
 
+Route::get('/auth/google/redirect', [SocialiteController::class, 'redirect'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->name('auth.google.callback');
 
 
 require __DIR__.'/settings.php';
