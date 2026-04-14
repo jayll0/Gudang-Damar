@@ -5,7 +5,9 @@ use App\Http\Middleware\EnsureTeamMembership;
 use App\Services\DatabaseService;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
+
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\ImageController;
 
 Route::inertia('/', 'Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -30,6 +32,10 @@ Route::get('/test', function () {
 
 Route::resource('barang', BarangController::class);
 
-
+Route::post('/generate-image', [ImageController::class, 'generate']);
+ 
+Route::get('/test-image', function () {
+    return view('test-image');
+});
 
 require __DIR__.'/settings.php';

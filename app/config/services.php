@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'huggingface' => [
+        'key' => env('HUGGINGFACE_API_KEY'),
+        'model' => env('HUGGINGFACE_MODEL', 'black-forest-labs/FLUX.1-schnell'),
+    ],
+
 ];
