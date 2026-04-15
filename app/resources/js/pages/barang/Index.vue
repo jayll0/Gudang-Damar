@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+import Navbar from '@/components/Navbar.vue';
 
 interface Barang {
     id_barang: number;
@@ -75,6 +76,8 @@ function hapus(id: number) {
 </script>
 
 <template>
+    <Navbar />
+    
     <div class="max-w-7xl mx-auto mt-10 px-4">
         <h1 class="text-2xl font-bold mb-5">List Barang</h1>
 
@@ -112,9 +115,9 @@ function hapus(id: number) {
             </div>
         </div>
 
-        <div v-if="$page.props.flash?.success"
-             class="bg-green-100 text-green-700 p-3 rounded mb-4">
-            {{ $page.props.flash.success }}
+        <div v-if="($page.props.flash as any)?.success"
+            class="bg-green-100 text-green-700 p-3 rounded mb-4">
+            {{ ($page.props.flash as any).success }}
         </div>
 
         <div class="overflow-x-auto">

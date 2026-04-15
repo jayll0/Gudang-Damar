@@ -6,6 +6,7 @@ use App\Services\DatabaseService;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\DashboardController;
 
 Route::inertia('/', 'Welcome', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -26,6 +27,9 @@ Route::get('/test', function () {
     $data = $databaseService->testConnection();
     return response()->json($data);
 });
+
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.barang');
 
 
 Route::resource('barang', BarangController::class);
