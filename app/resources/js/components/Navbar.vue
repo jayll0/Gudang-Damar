@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+
+function handleLogout() {
+    router.post('/logout');
+}
 </script>
 
 <template>
@@ -13,7 +17,7 @@ import { Link } from '@inertiajs/vue3';
             <li><Link href="/pesanan" id="buttonPesanan">Pesanan</Link></li>
             <li><Link href="/grafik" id="buttonGrafik">Grafik</Link></li>
             <li><Link href="/image-generation" id="buttonImageGeneration">Image Generation</Link></li>
-            <li><Link href="/" id="Log out">Log Out</Link></li>
+            <li><a href="#" id="logout-button" @click.prevent="handleLogout">Log Out</a></li>
         </ul>
     </header>
 </template>
