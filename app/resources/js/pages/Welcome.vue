@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
-import { dashboard, login, register } from '@/routes';
+import { login, register } from '@/routes';
 
 withDefaults(
     defineProps<{
@@ -13,9 +12,7 @@ withDefaults(
 );
 
 const page = usePage();
-const dashboardUrl = computed(() =>
-    page.props.currentTeam ? dashboard(page.props.currentTeam.slug).url : '/',
-);
+const dashboardUrl = '/dashboard';
 </script>
 
 <template>
