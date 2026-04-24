@@ -57,63 +57,43 @@ class ImageService
         } catch (Exception $e) {
             Log::warning('ImageService translate failed: ' . $e->getMessage());
         }
-        
+
         return $text;
     }
 
     public function generate(string $prompt, array $options = [], int $maxRetries = 3): string
     {
-        $attempt = 0;
-
-        // Terjemahkan prompt Indonesia → Inggris sebelum dikirim ke model
+        // 1. Prompt Bahasa Indonesia dari user diterjemahkan otomatis oleh kodemu
         $translatedPrompt = $this->translateToEnglish($prompt);
 
-        // Gabungkan dengan suffix gaya foto
+        // 2. Gabungkan dengan suffix gaya foto (agar hasilnya tetap seperti foto studio)
         $fullPrompt = $translatedPrompt . $this->promptSuffix;
 
-        Log::info('ImageService original prompt : ' . $prompt);
-        Log::info('ImageService full prompt (EN): ' . $fullPrompt);
+        Log::info('Pollinations original prompt : ' . $prompt);
+        Log::info('Pollinations full prompt (EN): ' . $fullPrompt);
 
-        while ($attempt < $maxRetries) {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $this->token,
-                'Accept'        => 'image/png',
-            ])
-            ->timeout(120)
-            ->post($this->baseUrl . $this->model, [
-                'inputs'     => $fullPrompt,
-                'parameters' => array_merge([
-                    'num_inference_steps' => 30,
-                    'guidance_scale'      => 8.5,
-                    'negative_prompt'     => $this->negativePrompt,
-                ], $options),
-            ]);
+        // 3. Format URL Pollinations (harus di-encode agar aman untuk URL)
+        // Tambahkan nologo=true agar tidak ada watermark dari pollinations
+        $encodedPrompt = urlencode($fullPrompt);
+        $imageUrl = "https://image.pollinations.ai/prompt/{$encodedPrompt}?width=1024&height=1024&nologo=true";
 
-            Log::info('HF Response Status: ' . $response->status());
-            Log::info('HF Response Body (first 300 chars): ' . substr($response->body(), 0, 300));
-
-            if ($response->status() === 503) {
-                $waitTime = (int) ($response->json('estimated_time', 20));
-                $attempt++;
-
-                if ($attempt >= $maxRetries) {
-                    throw new Exception("Model tidak merespons setelah {$maxRetries} percobaan.");
-                }
-
-                sleep(min($waitTime, 30));
-                continue;
-            }
+        try {
+            // 4. Hit API menggunakan Http facade bawaan Laravel
+            $response = Http::timeout(120)->get($imageUrl);
 
             if ($response->failed()) {
-                throw new Exception("API error: " . $response->body());
+                throw new Exception("Gagal mengunduh gambar dari Pollinations.");
             }
 
+            // 5. Simpan gambar ke storage lokal Laravel
             $filename = 'generated/' . Str::uuid() . '.png';
             Storage::disk('public')->put($filename, $response->body());
 
             return Storage::url($filename);
-        }
 
-        throw new Exception("Failed to generate image after {$maxRetries} attempts.");
+        } catch (Exception $e) {
+            Log::error('Pollinations Error: ' . $e->getMessage());
+            throw new Exception("Gagal membuat gambar: " . $e->getMessage());
+        }
     }
 }

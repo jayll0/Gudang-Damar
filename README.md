@@ -64,9 +64,6 @@ rename it to .env
 SUPABASE_URL=your-supabase-url
 SUPABASE_KEY=your-supabase-key
 
-HUGGINGFACE_API_KEY= Add your Hugging Face API key here
-HUGGINGFACE_MODEL= Add your Hugging Face model name here
-
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_REDIRECT_URI=http://localhost/auth/google/callback
@@ -105,5 +102,4 @@ Laravel = http://localhost:8000
 
 ## 📋 Requirements
 - Supabase
-- HuggingFace API Key
 
